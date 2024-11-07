@@ -4656,6 +4656,10 @@ dhc6_check_times(struct client_state *client)
 		 * depreffed an address.
 		 */
 		client->MRD = hi_expire - cur_time;
+		/* Rebind expired, cancel rebind(do_refresh6) timer. */
+		if (client->MRD == 0) {
+			cancel_timeout(do_refresh6, client);
+		}
 		break;
 
 	      default:
